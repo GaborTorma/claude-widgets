@@ -26,11 +26,16 @@ function R(T, N, C, F) {
     const miss = F.map((f, i) => i).filter(i => !a[i]);
     if (miss.length) {
       miss.forEach(i => { rows.children[i + 1].querySelector("b").style.color = "var(--text-danger)"; });
+      err.style.color = "var(--text-danger)";
       err.textContent = "Még nincs választás: " + miss.map(i => i + 1).join(", ");
       return;
     }
     const v = m.value.trim();
+    // Visszajelzés a hívás előtt: látszik, hogy a kattintás célba ért, akkor is, ha a host késleltet.
+    err.style.color = "var(--text-secondary)";
+    err.textContent = "Küldés…";
     sendPrompt(T + "-kör: " + F.map((f, i) => (i + 1) + a[i]).join(" ") + (v ? " · hiányzik: " + v : ""));
+    err.textContent = "Elküldve";
   };
   document.currentScript ? document.currentScript.before(w) : document.body.appendChild(w);
 }
